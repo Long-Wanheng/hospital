@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.agoi.mapper.UserMapper">
+
+    <resultMap id="r1" type="com.agoi.pojo.User">
+      <id column="u_id" jdbcType="INTEGER" property="uId" />
+      <result column="u_login_name" jdbcType="VARCHAR" property="uLoginName" />
+      <result column="u_password" jdbcType="VARCHAR" property="uPassword" />
+      <result column="u_true_name" jdbcType="VARCHAR" property="uTrueName" />
+      <result column="u_email" jdbcType="VARCHAR" property="uEmail" />
+      <result column="u_state" jdbcType="INTEGER" property="uState" />
+      <result column="r_id" jdbcType="INTEGER" property="rId" />
+    </resultMap>
+  <select id="login" resultMap="r1">
+      select * from user where u_login_name = #{uLoginName}
+  </select>
+
+
+
+</mapper>

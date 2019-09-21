@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.agoi.mapper.HosRegisterMapper">
+
+
+    <resultMap id="r1" type="com.agoi.pojo.HosRegister">
+        <id column="hosr_id" jdbcType="INTEGER" property="hosrId" />
+        <result column="hosdate" jdbcType="INTEGER" property="hosdate" />
+        <result column="hosr_state" jdbcType="INTEGER" property="hosrState" />
+        <association property="doctor" javaType="com.agoi.pojo.Doctor">
+            <id column="d_id" property="dId"></id>
+            <result column="d_doctor_name" property="dDoctorName"/>
+        </association>
+        <association property="dept" javaType="com.agoi.pojo.Dept">
+            <id column="deptid" property="deptid"></id>
+            <result property="dname" column="dname"></result>
+        </association>
+    </resultMap>
+
+
+    <select id="getRegisters" resultMap="r1">
+
+        select h.hosr_id,doc.d_doctor_name,h.hosdate,d.dname,h.hosr_state
+        from doctor doc,dept d,hos_register h
+        where h.d_id = doc.d_id and d.deptid = h.deptid
+        <if test="num!=-1">
+            and h.hosr_id = #{num}
+        </if>
+        <if test="dDoctorName!=null and dDoctorName!=''">
+            and doc.d_doctor_name like "%"#{dDoctorName}"%"
+        </if>
+        <if test="dname!=null and dname!=''">
+            and d.dname like "%"#{dname}"%"
+        </if>
+        <if test="beginTime!=null and beginTime!=''">
+            and h.hosdate >= #{beginTime}
+        </if>
+        <if test="endTime!=null and endTime!=''">
+            and h.hosdate  <![CDATA[ <= ]]>  #{endTime}
+        </if>
+    </select>
+
+
+
+    <select id="findByIds" resultMap="r1">
+        select h.hosr_id,doc.d_doctor_name,h.hosdate,d.dname,h.hosr_state
+        from doctor doc,dept d,hos_register h
+        where h.d_id = doc.d_id and d.deptid = h.deptid
+        and h.hosr_id in (
+        <foreach collection="array" item="rid" separator=",">
+            #{rid}
+        </foreach>
+        )
+
+    </select>
+
+
+
+</mapper>

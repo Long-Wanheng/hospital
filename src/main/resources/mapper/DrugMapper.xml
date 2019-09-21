@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.agoi.mapper.DrugMapper">
+
+    <resultMap id="d1" type="com.agoi.pojo.Drug">
+        <id column="dr_id" jdbcType="INTEGER" property="drId" />
+        <result column="dr_url" jdbcType="VARCHAR" property="drUrl" />
+        <result column="dr_inprice" jdbcType="INTEGER" property="drInprice" />
+        <result column="dr_outprice" jdbcType="INTEGER" property="drOutprice" />
+        <result column="dr_name" jdbcType="VARCHAR" property="drName" />
+        <result column="dr_type" jdbcType="INTEGER" property="drType" />
+        <result column="dr_sim_desc" jdbcType="VARCHAR" property="drSimDesc" />
+        <result column="dr_time" jdbcType="VARCHAR" property="drTime" />
+        <result column="dr_deta_desc" jdbcType="VARCHAR" property="drDetaDesc" />
+        <result column="dr_factory" jdbcType="VARCHAR" property="drFactory" />
+        <result column="dr_direction" jdbcType="VARCHAR" property="drDirection" />
+        <result column="dr_remark" jdbcType="VARCHAR" property="drRemark" />
+        <result column="dr_number" jdbcType="INTEGER" property="drNumber" />
+        <result column="dr_status_map" jdbcType="VARCHAR" property="drStatusMap" />
+        <association property="drugStatus" javaType="com.agoi.pojo.DrugStatus">
+            <id column="drug_id" jdbcType="INTEGER" property="drugId"></id>
+            <result  column="status_name" jdbcType="VARCHAR" property="statusName"></result>
+        </association>
+    </resultMap>
+
+    <select id="findDrugs" resultMap="d1">
+      select d.*,ds.status_name from drug d,drug_status ds
+      where d.dr_type = ds.drug_id
+      <if test="drName!=null and drName!=''">
+          and dr_name like "%"#{drName}"%"
+      </if>
+      <if test="drType!='-1' and drType!=null">
+          and dr_type = #{drType}
+      </if>
+    </select>
+
+
+
+
+    <resultMap id="d2" type="com.agoi.pojo.DrugStatus">
+        <id column="drug_id" jdbcType="INTEGER" property="drugId" />
+        <result column="status_name" jdbcType="VARCHAR" property="statusName" />
+    </resultMap>
+
+    <select id="findAll" resultMap="d2">
+        select * from drug_status
+    </select>
+
+
+    <insert id="insertDrug" parameterType="com.agoi.pojo.Drug">
+        insert into drug value(#{drId},#{drUrl},#{drInprice},#{drOutprice},#{drName},#{drType},#{drSimDesc},#{drTime},#{drDetaDesc},#{drFatory},#{drDirection},#{drRemark},null,'销售中')
+    </insert>
+
+
+
+    <select id="find" resultMap="d1">
+        select  * from drug where dr_id = #{drId}
+    </select>
+
+
+
+    <update id="update" parameterType="com.agoi.pojo.Drug">
+        update drug
+        set
+        dr_id = #{drId},
+        dr_url= #{drUrl},
+        dr_inprice = #{drInprice},
+        dr_outprice = #{drOutprice},
+        dr_name = #{drName},
+        dr_type = #{drType},
+        dr_sim_desc = #{drSimDesc},
+        dr_time = #{drTime},
+        dr_deta_desc = #{drDetaDesc},
+        dr_factory = #{drFactory},
+        dr_direction = #{drDirection},
+        dr_remark = #{drRemark}
+
+        where dr_id = #{drId}
+    </update>
+
+
+    <update id="addNum" parameterType="com.agoi.pojo.Drug">
+        update drug
+        set
+        dr_number = #{drNumber}
+        where dr_id = #{drId}
+    </update>
+
+
+    <select id="findByIds" resultMap="d1">
+        select d.*,ds.status_name
+        from drug d,drug_status ds
+        where d.dr_type=ds.drug_id
+        and d.dr_id in (
+        <foreach collection="array" item="rid" separator=",">
+            #{rid}
+        </foreach>
+        )
+
+    </select>
+
+
+</mapper>
