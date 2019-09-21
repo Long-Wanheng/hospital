@@ -54,7 +54,7 @@
         <tr>
             <td width="10%" class="tableleft">图片</td>
             <td>
-                <form id="uploadForm" enctype="multipart/form-data"><input type="file" name="drImg" value=""/> <input
+                <form id="uploadForm" enctype="multipart/form-data"><input type="file" name="drImg" id="drImg"value=""/> <input
                     id="upload"    type="button" value="上传"/>
                 </form>
             </td>
@@ -120,6 +120,7 @@
     $(function () {
         $("#upload").click(function () {
             var formData = new FormData($('#uploadForm')[0]);
+            formData.append('file', $('#drImg')[0].files[0]) //把file添加进去  name命名为img
             $.ajax({
                 type: 'post',
                 url: "http://127.0.0.1:8080/img/upload",

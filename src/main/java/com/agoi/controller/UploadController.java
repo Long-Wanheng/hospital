@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.io.File;
 
@@ -23,7 +23,7 @@ public class UploadController {
     private static final Logger LOGGER = LoggerFactory.getLogger(UploadController.class);
 
     @PostMapping("/upload")
-    public ResultSet uploadImg(@RequestParam("file") MultipartFile file) {
+    public ResultSet uploadImg(@RequestParam("file") CommonsMultipartFile file) {
         if (file.isEmpty()) {
             return ResultSet.view(-1, "文件不能为空");
         }
