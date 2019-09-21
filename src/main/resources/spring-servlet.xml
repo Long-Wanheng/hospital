@@ -13,5 +13,9 @@
 
     <!--8.配置静态资源-->
     <mvc:default-servlet-handler></mvc:default-servlet-handler>
-
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!--设置上传目录/tmp/upload;最大的文件容量设置为2M;最大的内存大小设置为0，表示所有文件都会写入磁盘中;无法设定multipart请求整体的最大容量-->
+        <property name="maxUploadSize" value="2097152"/>
+        <property name="maxInMemorySize" value="0"/>
+    </bean>
 </beans>
