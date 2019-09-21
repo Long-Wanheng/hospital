@@ -16,7 +16,7 @@
     <bean id="db" class="com.alibaba.druid.pool.DruidDataSource">
         <property name="password" value="root"></property>
         <property name="username" value="root"></property>
-        <property name="url" value="jdbc:mysql://192.168.1.102:3306/ssm_hospital?useSSL=false"></property>
+        <property name="url" value="jdbc:mysql://localhost:3306/ssm_hospital?useSSL=false"></property>
         <property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
     </bean>
 
